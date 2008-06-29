@@ -23,7 +23,7 @@
     if (match ($0, /^\"!/))
 	text_line = gensub (/^\"![[:space:]]*(.*)/, "\\1 \"$options\"", "g");
     else
-	text_line = "echo -e '" gensub (/^\"[[:space:]]*/, "", "g") "'";
+	text_line = "echo -e '" gensub (/^\"[[:space:]]*/, "", "g") "';";
 
     if (current_text == "head")
 	head[current_menu] = head[current_menu]"\n"text_line;
@@ -47,7 +47,7 @@
     entries_keys[current_menu, current_entry] = $1;
     entries_methods[current_menu, current_entry] = $2;
     size[current_menu] = current_entry;
-    text[current_menu] = text[current_menu]"\necho -e '"$3"'";
+    text[current_menu] = text[current_menu]"\necho -e '"$3"';";
 
     next;
 }
@@ -57,41 +57,41 @@
 
 END {
     for (this_menu in menu) {
-	print "menu_"this_menu"_exist() {";
-	print "true";
-	print "}";
+	print "menu_"this_menu"_exists() {";
+	print "true;";
+	print "};";
 
 	print "menu_"this_menu"_title() {";
-	print "nothing";
-	print "WIDTH=$(echo -n '"title[this_menu]"'|wc -m)";
-	print "printf '%'$((($(tput cols)-$WIDTH)/2))'s' ''";
-	print "echo '"title[this_menu]"'";
-	print "}";
+	print "nothing;";
+	print "WIDTH=$(echo -n '"title[this_menu]"'|wc -m);";
+	print "printf '%'$((($(tput cols)-$WIDTH)/2))'s' '';";
+	print "echo '"title[this_menu]"';";
+	print "};";
 
 	print "menu_"this_menu"_head() {";
-	print "nothing";
+	print "nothing;";
 	print head[this_menu];
-	print "}";
+	print "};";
 
 	print "menu_"this_menu"_foot() {";
-	print "nothing";
+	print "nothing;";
 	print foot[this_menu];
-	print "}";
+	print "};";
 
 	print "menu_"this_menu"_text() {";
-	print "nothing";
+	print "nothing;";
 	print text[this_menu];
-	print "}";
+	print "};";
 
 	print "menu_"this_menu"_choose() {";
-	print "nothing";
+	print "nothing;";
 	for (option in entries) {
 	    if (index (option, this_menu) == 1) {
 		print "if echo $1 | grep -q '["entries_keys[option]"]'; then";
-		print "echo '"entries_methods[option]"'";
-		print "fi";
+		print "echo '"entries_methods[option]"';";
+		print "fi;";
 	    }
 	}
-	print "}";
+	print "};";
     }
 }

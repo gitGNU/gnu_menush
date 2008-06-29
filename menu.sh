@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e
 
@@ -81,6 +81,22 @@ run_menu() {
     done
 }
 
-# AWK goes here.
+usage() {
+    echo "Usage: $0 FILE"
+}
+
+MENU="$1"
+if [ -z "$MENU" ]; then
+    echo "No configuration file specified." 1>&2
+    usage
+    exit 1
+elif [ "$MENU" = "--help" -o "$MENU" = "-help" -o "$MENU" = "-h" ]; then
+    usage
+    exit 0
+fi
+shift
+
+# Create the menu processing functions
+eval $(cat "$MENU" | awk '%AWK%')
 
 run_menu
