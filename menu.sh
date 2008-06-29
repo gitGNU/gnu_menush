@@ -97,6 +97,6 @@ fi
 shift
 
 # Create the menu processing functions
-eval $(cat "$MENU" | awk '%AWK%')
+eval $(awk '%AWK%' < "$MENU" | sed s/\#.*//)
 
 run_menu

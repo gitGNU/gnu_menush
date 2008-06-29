@@ -4,7 +4,7 @@
 # There is NO error checking
 # There are also no comments yet
 
-/^\. / { print; next }
+/^\. / { print $0";"; next }
 
 /^[[:alnum:]]/ {
     if (NF > 2)
