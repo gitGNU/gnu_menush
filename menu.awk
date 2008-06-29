@@ -57,6 +57,10 @@
 
 END {
     for (this_menu in menu) {
+	print "menu_"this_menu"_exist() {";
+	print "true";
+	print "}";
+
 	print "menu_"this_menu"_title() {";
 	print "nothing";
 	print "WIDTH=$(echo -n '"title[this_menu]"'|wc -m)";
