@@ -7,6 +7,30 @@ nothing() {
     return
 }
 
+# Centre text
+centre() {
+    # Get screen width.
+    local COLUMNS=`tput cols`
+
+    ( if [ "$@" ]; then echo "$@"; else cat; fi ) | awk '
+        { spaces = ('$COLUMNS' - length) / 2
+          while (spaces-- > 0) printf (" ")
+          print
+        }'
+}
+
+# Right-align text
+right() {
+    # Get screen width.
+    local COLUMNS=`tput cols`
+
+    ( if [ "$@" ]; then echo "$@"; else cat; fi ) | awk '
+        { spaces = '$COLUMNS' - length
+          while (spaces-- > 0) printf (" ")
+          print
+        }'
+}
+
 # Read a single character from the terminal without echoing it
 readchar() {
     local old_stty=$(stty -g)
@@ -97,6 +121,11 @@ fi
 shift
 
 # Create the menu processing functions
-eval $(awk '%AWK%' < "$MENU" | sed s/\#.*//)
+if [ "$BASH_VERSION" ]; then
+    sedecho() { sed "s/echo/echo\ -e/g"; }
+else
+    sedecho() { cat; }
+fi
+eval $(awk '%AWK%' < "$MENU" | sed s/\#.*// | sedecho)
 
 run_menu

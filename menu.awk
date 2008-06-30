@@ -23,7 +23,7 @@
     if (match ($0, /^\"!/))
 	text_line = gensub (/^\"![[:space:]]*(.*)/, "\\1 \"$options\"", "g");
     else
-	text_line = "echo -e '" gensub (/^\"[[:space:]]*/, "", "g") "';";
+	text_line = "echo '" gensub (/^\"[[:space:]]*/, "", "g") "';";
 
     if (current_text == "head")
 	head[current_menu] = head[current_menu]"\n"text_line;
@@ -40,6 +40,19 @@
 	for (i = 4; i <= NF; i++)
 	    $3 = $3" "$i;
 
+    echo="echo " # Space needed for tabbage
+    if (match ($3, /^(<+|[>\|]) ?/)) {
+	if (match ($3, /^>/))
+	    echo="right "
+	else if (match ($3, /^\|/))
+	    echo="centre "
+	else if (align = match ($3, /^<+/))
+	    for (i = 0; i < align; i++)
+		echo = echo"'\\t'"
+	
+	sub (/^(<+|[>\|]) ?/, "", $3)
+    }
+
     current_text = "foot";
 
     current_entry++;
@@ -47,7 +60,9 @@
     entries_keys[current_menu, current_entry] = $1;
     entries_methods[current_menu, current_entry] = $2;
     size[current_menu] = current_entry;
-    text[current_menu] = text[current_menu]"\necho -e '"$3"';";
+
+    # space is already added after echo
+    text[current_menu] = text[current_menu]"\n"echo"'"$3"';"
 
     next;
 }
@@ -64,8 +79,7 @@ END {
 	print "menu_"this_menu"_title() {";
 	print "nothing;";
 	print "WIDTH=$(echo -n '"title[this_menu]"'|wc -m);";
-	print "printf '%'$((($(tput cols)-$WIDTH)/2))'s' '';";
-	print "echo '"title[this_menu]"';";
+	print "centre '"title[this_menu]"';";
 	print "};";
 
 	print "menu_"this_menu"_head() {";
