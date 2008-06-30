@@ -81,7 +81,7 @@ run_menu() {
 	choice=""
 	while [ -z "$choice" ]; do
 	    if [ "$user_choice" ]; then
-		echo -n $'\033[0;1;31mInvalid option. Please try again.\033[0m\r'
+		$ECHO -n '\033[0;1;31mInvalid option. Please try again.\033[0m\r'
 	    fi
 	    readchar user_choice
 	    choice=$(eval "menu_${which_menu}_choose $user_choice")
@@ -123,8 +123,10 @@ shift
 # Create the menu processing functions
 if [ "$BASH_VERSION" ]; then
     sedecho() { sed "s/echo/echo\ -e/g"; }
+    ECHO="echo -e"
 else
     sedecho() { cat; }
+    ECHO=echo
 fi
 eval $(awk '%AWK%' < "$MENU" | sed s/\#.*// | sedecho)
 

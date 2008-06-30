@@ -3,7 +3,8 @@
 # Works but I don't like the superfluous sed. Needed to preserve
 # preceeding and trailing whitespace
 
-sed 's/^/./; s/$/./; s/%AWK%/\n.%AWK%.\n/' menu.sh | while read line; do
+sed 's/^/./; s/$/./; s/\\/\\\\/g; s/%AWK%/\n.%AWK%.\n/' menu.sh \
+    | while read line; do
     if echo "$line" | grep -q '^\.%AWK%\.$'; then
 	sed s/\'/\'\\\\\'\'/g < menu.awk
     else
