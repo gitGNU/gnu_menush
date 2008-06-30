@@ -26,9 +26,9 @@
 	text_line = "echo '" gensub (/^\"[[:space:]]*/, "", "g") "';";
 
     if (current_text == "head")
-	head[current_menu] = head[current_menu]"\n"text_line;
+	text[current_menu] = text[current_menu]"\n"text_line;
     else
-	foot[current_menu] = foot[current_menu]"\n"text_line;
+	text[current_menu] = text[current_menu]"\n"text_line;
 
     next;
 }
@@ -80,16 +80,6 @@ END {
 	print "nothing;";
 	print "WIDTH=$(echo -n '"title[this_menu]"'|wc -m);";
 	print "centre '"title[this_menu]"';";
-	print "};";
-
-	print "menu_"this_menu"_head() {";
-	print "nothing;";
-	print head[this_menu];
-	print "};";
-
-	print "menu_"this_menu"_foot() {";
-	print "nothing;";
-	print foot[this_menu];
 	print "};";
 
 	print "menu_"this_menu"_text() {";

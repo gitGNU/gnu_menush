@@ -72,10 +72,7 @@ run_menu() {
 	# Display the menu
 	clear
 	eval "menu_${which_menu}_title \"$options\""
-	eval "menu_${which_menu}_head \"$options\""
 	eval "menu_${which_menu}_text \"$options\""
-	eval "menu_${which_menu}_foot \"$options\""
-	echo
 
 	# Determine the user's choice, ensuring it's valid
 	choice=""
