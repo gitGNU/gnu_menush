@@ -79,6 +79,7 @@ run_menu() {
 
 	# Determine the user's choice, ensuring it's valid
 	choice=""
+	user_choice=""
 	while [ -z "$choice" ]; do
 	    if [ "$user_choice" ]; then
 		$ECHO -n '\033[0;1;31mInvalid option. Please try again.\033[0m\r'
