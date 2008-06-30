@@ -36,9 +36,20 @@
 /^\+/ {
     $0 = gensub (/^\+[[:space:]]*/, "", "g");
 
+    matchfunc=""
+    if (match ($3, /^\?.*/)) {
+	if (RLENGTH > 1)
+	    matchfunc=$3
+	else
+	    matchfunc=$4
+    }
+
     if (NF > 3)
 	for (i = 4; i <= NF; i++)
 	    $3 = $3" "$i;
+
+    sub (/^\? */, "", matchfunc)
+    sub (/^\? *[^ ]+ */, "", $3)
 
     echo="echo " # Space needed for tabbage
     if (match ($3, /^(<+|[>\|]) ?/)) {
@@ -62,7 +73,11 @@
     size[current_menu] = current_entry;
 
     # space is already added after echo
-    text[current_menu] = text[current_menu]"\n"echo"'"$3"';"
+    if (matchfunc)
+	text[current_menu] = text[current_menu]"\n"matchfunc" && "
+    else
+	text[current_menu] = text[current_menu]"\n"
+    text[current_menu] = text[current_menu]echo"'"$3"';"
 
     next;
 }
