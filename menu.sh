@@ -94,9 +94,7 @@ run_menu() {
 	else
 	    if echo "$choice" | grep -q "^run="; then
 		# The choice is to run something
-		$(echo $choice | sed 's/^run=//')
-		# Let the user see any output
-		sleep 3
+		$(echo $choice | sed 's/^run=//') "$choice" "$options"
 	    fi
 	fi
 
