@@ -21,7 +21,7 @@
 
 /^\"/ {
     if (match ($0, /^\"!/))
-	text_line = gensub (/^\"![[:space:]]*(.*)/, "\\1 \"$options\"", "g");
+	text_line = gensub (/^\"![[:space:]]*(.*)/, "\\1 \"$options\";", "g");
     else
 	text_line = "echo '" gensub (/^\"[[:space:]]*/, "", "g") "';";
 
