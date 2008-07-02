@@ -50,8 +50,12 @@
     next;
 }
 
-/^\+/ {
-    $0 = gensub (/^\+[[:space:]]*/, "", "g");
+/^[-\+]/ {
+    if (substr ($0, 1, 1) == "-")
+	option="invisible"
+    else
+	option="visible"
+    $0 = gensub (/^[-\+][[:space:]]*/, "", "g");
 
     matchfunc=""
     if (match ($3, /^\?.*/)) {
@@ -89,12 +93,14 @@
     entries_methods[current_menu, current_entry] = $2;
     size[current_menu] = current_entry;
 
-    # space is already added after echo
-    if (matchfunc)
-	text[current_menu] = text[current_menu]"\n"matchfunc" && "
-    else
-	text[current_menu] = text[current_menu]"\n"
-    text[current_menu] = text[current_menu]echo"'"$3"';"
+    if (option == "visible") {
+	# space is already added after echo
+	if (matchfunc)
+	    text[current_menu] = text[current_menu]"\n"matchfunc" && "
+	else
+	    text[current_menu] = text[current_menu]"\n"
+	text[current_menu] = text[current_menu]echo"'"$3"';"
+    }
 
     next;
 }

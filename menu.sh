@@ -122,7 +122,7 @@ run_menu() {
 	else
 	    if echo "$choice" | grep -q "^run="; then
 		# The choice is to run something
-		$(echo $choice | sed 's/^run=//') "$choice" "$options"
+		$(echo $choice | sed 's/^run=//') "$user_choice" "$options"
 	    fi
 	fi
 
