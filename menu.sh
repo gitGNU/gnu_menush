@@ -1,4 +1,22 @@
 #!/bin/sh
+#
+#.    Copyright (C) 2008  Matthew King
+#.
+#.    This program is free software: you can redistribute it and/or
+#.    modify it under the terms of the GNU General Public License as
+#.    published by the Free Software Foundation, either version 3 of the
+#.    License, or (at your option) any later version.
+#.
+#.    This program is distributed in the hope that it will be useful, but
+#.    WITHOUT ANY WARRANTY; without even the implied warranty of
+#.    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#.    General Public License for more details.
+#.
+#.    You should have received a copy of the GNU General Public License
+#.    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Leave the . above so that copyright() will display it and I don't have
+# to have it twice.
 
 set -e
 
@@ -7,12 +25,22 @@ nothing() {
     return
 }
 
+# Display a copyright message
+copyright() {
+    centre Menu Shell
+    echo
+    grep ^#\\. "$0"|sed s/^#\\.//
+    echo
+    echo "Press any key to continue..."
+    readchar
+}
+
 # Centre text
 centre() {
     # Get screen width.
     local COLUMNS=`tput cols`
 
-    ( if [ "$@" ]; then echo "$@"; else cat; fi ) | awk '
+    ( if [ "$*" ]; then echo "$@"; else cat; fi ) | awk '
         { spaces = ('$COLUMNS' - length) / 2
           while (spaces-- > 0) printf (" ")
           print
@@ -24,7 +52,7 @@ right() {
     # Get screen width.
     local COLUMNS=`tput cols`
 
-    ( if [ "$@" ]; then echo "$@"; else cat; fi ) | awk '
+    ( if [ "$*" ]; then echo "$@"; else cat; fi ) | awk '
         { spaces = '$COLUMNS' - length
           while (spaces-- > 0) printf (" ")
           print
